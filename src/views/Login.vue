@@ -57,6 +57,7 @@ export default {
         if (valid) {
           login(this.LoginForm).then(result => {
             if (result.meta.status === 200) {
+              localStorage.setItem('itcastpro_token', result.data.token)
               this.$router.push({ name: 'Home' })
             } else {
               this.$message.error(result.meta.msg)
