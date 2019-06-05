@@ -18,11 +18,38 @@ axios.interceptors.request.use(function (config) {
 })
 
 // 获取用户数据
-export const getUserList = (pa) => {
+export const getUserList = pa => {
   return axios.get('users', {
     params: pa
   })
-    .then((result) => {
+    .then(result => {
+      return result.data
+    })
+}
+// 用户提交
+export const editUser = obj => {
+  return axios.put(`users/${obj.id}`, obj)
+    .then(result => {
+      return result.data
+    })
+}
+// 删除用户
+export const delUserById = id => {
+  return axios.delete(`users/${id}`)
+    .then(result => {
+      return result.data
+    })
+}
+// 用户状态改变
+export const updateUserStatuById = (id, type) => {
+  return axios.put(`users/${id}/state/${type}`)
+    .then(result => {
+      return result.data
+    })
+}
+export const addUser = obj => {
+  return axios.post('users', obj)
+    .then(result => {
       return result.data
     })
 }
