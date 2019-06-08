@@ -8,8 +8,8 @@
     </el-breadcrumb>
     <!-- 搜索区域 -->
     <div style="margin-top: 15px;">
-      <el-input placeholder="请输入内容" v-model="userKey" class="input-with-select searchBox">
-        <el-button slot="append" icon="el-icon-search"></el-button>
+      <el-input placeholder="请输入内容" @keyup.enter.native='serachUser' clearable v-model="query" class="input-with-select searchBox">
+        <el-button slot="append" icon="el-icon-search" @click='serachUser'></el-button>
       </el-input>
       <el-button type="success" plain @click="adduser">添加用户</el-button>
     </div>
@@ -108,16 +108,15 @@
       </div>
     </el-dialog>
     <!-- 分页 -->
-    <span class="demonstration">完整功能</span>
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="1"
-      :page-sizes="[5, 10, 15, 20]"
-      :page-size="5"
+      :current-page="pagenum"
+      :page-sizes="[1, 2, 3, 4]"
+      :page-size="pagesize"
       layout="total, sizes, prev, pager, next, jumper"
-      :total="5"
-    ></el-pagination>
+      :total="total">
+      </el-pagination>
   </div>
 </template>
 <script>
@@ -151,6 +150,7 @@ export default {
       }
     }
     return {
+      total: 0,
       // 用户状态
       userstatu: true,
       // 用户搜索关键字
@@ -158,7 +158,7 @@ export default {
       //   当前页码
       pagenum: 1,
       // 每页显示的记录数
-      pagesize: 5,
+      pagesize: 1,
       // 表格数据源
       userList: [],
       editDialogFormVisible: false, // 编辑层不显示
@@ -197,6 +197,9 @@ export default {
     }
   },
   methods: {
+    serachUser () {
+      this.init() // 搜索功能
+    },
     adduser () {
       this.addDialogFormVisible = true
     },
@@ -288,9 +291,13 @@ export default {
     },
     handleSizeChange (val) {
       console.log(`每页 ${val} 条`)
+      this.pagesize = val
+      this.init()
     },
     handleCurrentChange (val) {
       console.log(`当前页: ${val}`)
+      this.pagenum = val
+      this.init()
     },
     init () {
       getUserList({
@@ -300,6 +307,7 @@ export default {
       }).then(result => {
         // console.log(result)
         this.userList = result.data.users
+        this.total = result.data.total
       })
     }
   },

@@ -2,6 +2,7 @@ import axios from 'axios'
 // 设置基准路径
 axios.defaults.baseURL = 'http://localhost:8888/api/private/v1/'
 
+// 添加请求拦截器
 axios.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么?获取token,传递
   // 1.获取token
@@ -16,22 +17,10 @@ axios.interceptors.request.use(function (config) {
   return Promise.reject(error)
 })
 
-// 获取所有角色列表
-export const getAllRoleList = () => {
-  return axios.get('roles')
-    .then((result) => {
-      return result.data
-    })
-}
-
-export const editRole = obj => {
-  console.log(obj)
-  return axios.put(`users/${obj.id}/role`, obj)
-    .then(result => {
-      console.log(result)
-      return result.data
-    })
-}
-export const removeRightByUserId = (roleid, rightid) => {
-  return axios.delete(`roles/${roleid}/rights/${rightid}`)
+// 获取所有权限列表数据
+export const getAllRightList = (type) => {
+  return axios({
+    type: 'get',
+    url: `rights/${type}`
+  })
 }
