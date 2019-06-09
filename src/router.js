@@ -35,7 +35,7 @@ export default new VueRouter({
         },
         {
           name: 'User',
-          path: 'user',
+          path: 'users',
           component: User
         },
         {

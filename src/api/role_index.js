@@ -35,3 +35,18 @@ export const editRole = obj => {
 export const removeRightByUserId = (roleid, rightid) => {
   return axios.delete(`roles/${roleid}/rights/${rightid}`)
 }
+export const addRole = params => {
+  return axios({
+    method: 'post',
+    url: 'roles',
+    data: params
+  })
+}
+// 实现角色授权提交
+export const grantRoleSubmit = (roleid, ids) => {
+  return axios({
+    url: `roles/${roleid}/rights`,
+    method: 'post',
+    data: { rids: ids }
+  })
+}
